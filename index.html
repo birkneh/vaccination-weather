@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vaccination Weather Trends</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  </head>
+  <body>
+    <div class="bg-orb orb-a"></div>
+    <div class="bg-orb orb-b"></div>
+    <div class="container">
+      <header class="hero">
+        <p class="eyebrow">Global Public Health Lens</p>
+        <h1>Vaccination Trend by Weather Patterns</h1>
+        <p class="subtitle">
+          Live dashboard combining vaccination intensity and daily mean temperature,
+          including lagged weather-correlation analysis across multiple regions and Africa.
+        </p>
+      </header>
+
+      <section class="panel controls">
+        <div class="control-group">
+          <label for="locations">Locations</label>
+          <select id="locations" multiple></select>
+        </div>
+        <div class="control-group">
+          <label for="start-date">Start date</label>
+          <input id="start-date" type="date" />
+        </div>
+        <div class="control-group">
+          <label for="end-date">End date</label>
+          <input id="end-date" type="date" />
+        </div>
+        <div class="control-group">
+          <label for="lag-location">Lag analysis location</label>
+          <select id="lag-location"></select>
+        </div>
+        <div class="control-group">
+          <label for="refresh-interval">Auto refresh</label>
+          <select id="refresh-interval">
+            <option value="0">Off</option>
+            <option value="15">Every 15 min</option>
+            <option value="30" selected>Every 30 min</option>
+            <option value="60">Every 60 min</option>
+          </select>
+        </div>
+        <div class="toggle-wrap">
+          <label class="toggle">
+            <input id="rolling-toggle" type="checkbox" checked />
+            <span>Use 7-day averages</span>
+          </label>
+        </div>
+        <button id="refresh-btn" class="btn">Update now</button>
+      </section>
+
+      <section class="metrics" id="metrics"></section>
+
+      <section class="panel">
+        <h2>Vaccinations per Million</h2>
+        <div id="vaccinations-chart" class="chart"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Daily Mean Temperature (C)</h2>
+        <div id="temperature-chart" class="chart"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Vaccination Intensity vs Temperature</h2>
+        <div id="scatter-chart" class="chart"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Lag Correlation (-30 to +30 days)</h2>
+        <div id="lag-chart" class="chart"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Summary by Location</h2>
+        <div class="table-wrap">
+          <table id="summary-table">
+            <thead>
+              <tr>
+                <th>Location</th>
+                <th>Records</th>
+                <th>Same-day corr</th>
+                <th>Best lag (days)</th>
+                <th>Best lag corr</th>
+                <th>Date start</th>
+                <th>Date end</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p id="status">Loading data...</p>
+        <p>
+          Sources:
+          <a href="https://github.com/owid/covid-19-data" target="_blank" rel="noreferrer"
+            >Our World in Data</a
+          >
+          and
+          <a href="https://open-meteo.com/en/docs/historical-weather-api" target="_blank" rel="noreferrer"
+            >Open-Meteo</a
+          >
+        </p>
+      </footer>
+    </div>
+    <script src="./app.js"></script>
+  </body>
+</html>
